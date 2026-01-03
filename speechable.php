@@ -88,9 +88,14 @@ final class Speechable {
 
     /**
      * Load plugin textdomain.
+     *
+     * Note: Since WordPress 4.6, plugins hosted on WordPress.org have translations
+     * loaded automatically. This function is kept for backwards compatibility
+     * and for plugins not hosted on WordPress.org.
      */
     public function load_textdomain() {
-        load_plugin_textdomain( 'speechable', false, dirname( SPEECHABLE_PLUGIN_BASENAME ) . '/languages' );
+        // Translations are loaded automatically by WordPress for plugins on WordPress.org.
+        // This is intentionally left empty for forward compatibility.
     }
 
     /**
@@ -1205,7 +1210,7 @@ final class Speechable {
         }
 
         // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Base64 audio data.
-        $audio_data   = isset( $_POST['audio_data'] ) ? $_POST['audio_data'] : '';
+        $audio_data   = isset( $_POST['audio_data'] ) ? wp_unslash( $_POST['audio_data'] ) : '';
         $word_timings = isset( $_POST['word_timings'] ) ? sanitize_text_field( wp_unslash( $_POST['word_timings'] ) ) : '';
 
         update_post_meta( $post_id, '_speechable_audio', $audio_data );

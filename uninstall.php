@@ -18,14 +18,14 @@ delete_option( 'speechable_options' );
 // Delete all post meta created by the plugin.
 global $wpdb;
 
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Required for cleanup on uninstall.
 $wpdb->delete(
 	$wpdb->postmeta,
 	array( 'meta_key' => '_speechable_audio' ),
 	array( '%s' )
 );
 
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Required for cleanup on uninstall.
 $wpdb->delete(
 	$wpdb->postmeta,
 	array( 'meta_key' => '_speechable_word_timings' ),
