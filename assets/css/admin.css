@@ -1,0 +1,232 @@
+/**
+ * Speechable Admin Styles
+ *
+ * @package Speechable
+ */
+
+.speechable-gen-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    border: 1px solid #2563eb;
+    border-radius: 4px;
+    background: #fff;
+    color: #2563eb;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.speechable-gen-btn:hover {
+    background: #2563eb;
+    color: #fff;
+}
+
+.speechable-gen-btn.has-audio {
+    border-color: #16a34a;
+    color: #16a34a;
+}
+
+.speechable-gen-btn.has-audio:hover {
+    background: #16a34a;
+    color: #fff;
+}
+
+/* Modal */
+.speechable-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+}
+
+.speechable-modal {
+    background: #fff;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: auto;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.speechable-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.speechable-modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.speechable-modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 4px;
+}
+
+.speechable-modal-body {
+    padding: 20px;
+}
+
+.speechable-field {
+    margin-bottom: 16px;
+}
+
+.speechable-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+.speechable-field select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.speechable-progress-container {
+    margin: 16px 0;
+}
+
+.speechable-progress-outer {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.speechable-progress-inner {
+    height: 100%;
+    width: 0;
+    background: #2563eb;
+    transition: width 0.2s;
+}
+
+.speechable-status {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 8px;
+}
+
+.speechable-error {
+    padding: 8px 12px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+.speechable-modal-footer {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    padding: 16px 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.speechable-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.speechable-btn-primary {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+}
+
+.speechable-btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.speechable-btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.speechable-btn-secondary {
+    background: #fff;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.speechable-btn-secondary:hover {
+    background: #f9fafb;
+}
+
+.speechable-btn-danger {
+    background: #fff;
+    color: #dc2626;
+    border: 1px solid #dc2626;
+}
+
+.speechable-btn-danger:hover {
+    background: #fef2f2;
+}
+
+/* Preview player */
+.speechable-preview-player {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+    margin-top: 16px;
+}
+
+.speechable-preview-play {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #2563eb;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.speechable-preview-progress {
+    flex: 1;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.speechable-preview-progress-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 2px;
+    width: 0;
+}
+
+.speechable-preview-time {
+    font-size: 12px;
+    color: #6b7280;
+}
