@@ -7,6 +7,11 @@ Convert your WordPress posts to natural-sounding audio with AI-powered text-to-s
 [![WordPress](https://img.shields.io/badge/WordPress-5.8+-blue.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4+-purple.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPLv2-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![Download](https://img.shields.io/badge/Download-v1.0.0-brightgreen.svg)](https://github.com/tansihmittal/speechable/releases/tag/v1.0.0)
+
+## 📥 Download
+
+**[⬇️ Download ZIP (v1.0.0)](https://github.com/tansihmittal/speechable/archive/refs/tags/v1.0.0.zip)** | [View Release Page](https://github.com/tansihmittal/speechable/releases/tag/v1.0.0)
 
 ## ✨ Features
 
@@ -64,7 +69,7 @@ Transform your audio with one-click presets:
 
 ### Manual Installation
 
-1. Download the latest release
+1. **[Download the latest release](https://github.com/tansihmittal/speechable/releases/tag/v1.0.0)** or **[Direct ZIP Download](https://github.com/tansihmittal/speechable/archive/refs/tags/v1.0.0.zip)**
 2. Upload the `speechable` folder to `/wp-content/plugins/`
 3. Activate the plugin through the **'Plugins'** menu in WordPress
 4. Go to **Settings → Speechable** to configure options
@@ -141,8 +146,10 @@ This project is licensed under the GPLv2 or later - see the [LICENSE](https://ww
 ## 🔗 Links
 
 - [WordPress Plugin Page](https://wordpress.org/plugins/speechable/)
+- [Download Release v1.0.0](https://github.com/tansihmittal/speechable/releases/tag/v1.0.0)
+- [Direct ZIP Download](https://github.com/tansihmittal/speechable/archive/refs/tags/v1.0.0.zip)
 - [Support](https://tanishmittal.com?ref=speechable)
-- [Report Issues](https://github.com/yourusername/speechable/issues)
+- [Report Issues](https://github.com/tansihmittal/speechable/issues)
 
 ---
 
