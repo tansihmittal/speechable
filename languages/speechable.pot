@@ -1,0 +1,137 @@
+# Copyright (C) 2025 Tanish Mittal
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Speechable 1.0.0\n"
+"Report-Msgid-Bugs-To: https://tanishmittal.com\n"
+"POT-Creation-Date: 2024-01-01 00:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: speechable.php
+msgid "Settings"
+msgstr ""
+
+#: speechable.php
+msgid "Speechable Settings"
+msgstr ""
+
+#: speechable.php
+msgid "Speechable"
+msgstr ""
+
+#: speechable.php
+msgid "Voice Settings"
+msgstr ""
+
+#: speechable.php
+msgid "Configure the default voice and audio effects."
+msgstr ""
+
+#: speechable.php
+msgid "Default Language"
+msgstr ""
+
+#: speechable.php
+msgid "Default Voice"
+msgstr ""
+
+#: speechable.php
+msgid "Audio Quality"
+msgstr ""
+
+#: speechable.php
+msgid "Voice Presets"
+msgstr ""
+
+#: speechable.php
+msgid "Default Playback Speed"
+msgstr ""
+
+#: speechable.php
+msgid "Pitch Shift"
+msgstr ""
+
+#: speechable.php
+msgid "Reverb"
+msgstr ""
+
+#: speechable.php
+msgid "Display Settings"
+msgstr ""
+
+#: speechable.php
+msgid "Enable for Post Types"
+msgstr ""
+
+#: speechable.php
+msgid "Player Position"
+msgstr ""
+
+#: speechable.php
+msgid "Before Content"
+msgstr ""
+
+#: speechable.php
+msgid "After Content"
+msgstr ""
+
+#: speechable.php
+msgid "Enable word highlighting during playback"
+msgstr ""
+
+#: speechable.php
+msgid "Player Appearance"
+msgstr ""
+
+#: speechable.php
+msgid "Save Settings"
+msgstr ""
+
+#: speechable.php
+msgid "Credits"
+msgstr ""
+
+#: speechable.php
+msgid "Made by"
+msgstr ""
+
+#: speechable.php
+msgid "TTS Model"
+msgstr ""
+
+#: speechable.php
+msgid "Play audio"
+msgstr ""
+
+#: speechable.php
+msgid "Playback speed"
+msgstr ""
+
+#: speechable.php
+msgid "Download audio"
+msgstr ""
+
+#: speechable.php
+msgid "Permission denied."
+msgstr ""
+
+#: speechable.php
+msgid "Invalid post."
+msgstr ""
+
+#: speechable.php
+msgid "Audio saved."
+msgstr ""
+
+#: speechable.php
+msgid "Audio deleted."
+msgstr ""
+
+#: speechable.php
+msgid "Post not found."
+msgstr ""
