@@ -33,7 +33,7 @@ Convert your WordPress posts to natural-sounding audio with AI-powered text-to-s
 |---------|-------------|
 | 🎙️ **AI-Powered Voices** | Natural-sounding speech using Piper TTS neural network models |
 | 🌍 **12 Languages** | English, German, French, Spanish, Italian, Portuguese, Dutch, Polish, Russian, Chinese, Japanese, Korean |
-| 📖 **Word Highlighting** | Follow along as words are highlighted during playback |
+| 📖 **Word Highlighting** | Whisper-powered accurate word timestamps for precise synchronization |
 | 🎨 **Customizable Player** | Match your theme with custom colors and styling |
 | ⬇️ **Download Audio** | Let visitors download audio files for offline listening |
 | 🎭 **Voice Presets** | Quick effects like Warm, Radio, Narrator, Deep, and more |
@@ -182,10 +182,21 @@ This plugin uses the following third-party services for text-to-speech functiona
 
 ### Whisper (Word Timestamps)
 - **Service**: [Hugging Face Transformers.js](https://huggingface.co/docs/transformers.js)
-- **Model**: Xenova/whisper-tiny.en (~75MB)
+- **CDN**: jsDelivr (`cdn.jsdelivr.net/npm/@huggingface/transformers`)
+- **Models Available**:
+  - `Xenova/whisper-tiny.en` (~75MB) - Fastest, English only
+  - `Xenova/whisper-tiny` (~75MB) - Fast, all languages
+  - `Xenova/whisper-small.en` (~250MB) - Better accuracy, English only
+  - `Xenova/whisper-small` (~250MB) - Better accuracy, all languages
+- **Purpose**: Extracts accurate word-level timestamps for synchronized highlighting
 - **License**: [Apache 2.0](https://github.com/huggingface/transformers.js/blob/main/LICENSE)
 
-> **🔒 Privacy Note**: Your content is processed locally in your browser and is **NOT** sent to any external server. Voice models are downloaded once and cached locally.
+### ONNX Runtime
+- **Service**: [ONNX Runtime Web](https://onnxruntime.ai/)
+- **CDN**: Cloudflare (`cdnjs.cloudflare.com/ajax/libs/onnxruntime-web`)
+- **Purpose**: Machine learning inference engine for TTS models
+
+> **🔒 Privacy Note**: Your content is processed locally in your browser and is **NOT** sent to any external server. Voice models and Whisper models are downloaded once and cached locally.
 
 ---
 
@@ -272,6 +283,7 @@ This project is licensed under the GPLv2 or later - see the [LICENSE](LICENSE.tx
 - **Developer**: [Tanish Mittal](https://tanishmittal.com)
 - **TTS Engine**: [Piper TTS](https://github.com/rhasspy/piper) - A fast, local neural text-to-speech system
 - **Web Library**: [Piper TTS Web](https://github.com/Mintplex-Labs/piper-tts-web) by Mintplex Labs
+- **Word Timestamps**: [OpenAI Whisper](https://github.com/openai/whisper) via [Transformers.js](https://huggingface.co/docs/transformers.js)
 - **Icons**: Lucide Icons (MIT License)
 
 ---
