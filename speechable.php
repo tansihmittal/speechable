@@ -3,7 +3,7 @@
  * Plugin Name: Speechable
  * Plugin URI: https://github.com/tansihmittal/speechable/
  * Description: Convert posts to audio using AI-powered text-to-speech with word highlighting.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Tanish Mittal
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'SPEECHABLE_VERSION', '1.0.0' );
+define( 'SPEECHABLE_VERSION', '1.0.1' );
 define( 'SPEECHABLE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SPEECHABLE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'SPEECHABLE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

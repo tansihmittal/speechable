@@ -7,114 +7,237 @@ Convert your WordPress posts to natural-sounding audio with AI-powered text-to-s
 [![WordPress](https://img.shields.io/badge/WordPress-5.8+-blue.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4+-purple.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPLv2-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![Version](https://img.shields.io/badge/Version-1.0.1-orange.svg)](https://github.com/tansihmittal/speechable/releases)
+
+---
+
+<p align="center">
+  <a href="https://github.com/tansihmittal/speechable/releases/download/V1.0.1/speechable.zip">
+    <img src="https://img.shields.io/badge/⬇️_Download_Plugin-v1.0.1-2563eb?style=for-the-badge&logo=wordpress" alt="Download Plugin" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://wordpress.org/plugins/speechable/">
+    <img src="https://img.shields.io/badge/View_on-WordPress.org-21759b?style=for-the-badge&logo=wordpress" alt="WordPress.org" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/tansihmittal/speechable/issues">
+    <img src="https://img.shields.io/badge/Report-Issues-red?style=for-the-badge&logo=github" alt="Report Issues" />
+  </a>
+</p>
+
+---
 
 ## ✨ Features
 
-- **🎙️ AI-Powered Voices** - Natural-sounding speech using Piper TTS neural network models
-- **🌍 12 Languages** - English, German, French, Spanish, Italian, Portuguese, Dutch, Polish, Russian, Chinese, Japanese, Korean
-- **📖 Word Highlighting** - Follow along as words are highlighted during playback
-- **🎨 Customizable Player** - Match your theme with custom colors and styling
-- **⬇️ Download Audio** - Let visitors download audio files for offline listening
-- **🎭 Voice Presets** - Quick effects like Radio, Stadium, Cave, Chipmunk, Robot, and more
-- **💰 100% Free** - No premium version, no limits, no hidden costs
-- **🔒 Privacy-First** - All processing happens locally in the browser
+| Feature | Description |
+|---------|-------------|
+| 🎙️ **AI-Powered Voices** | Natural-sounding speech using Piper TTS neural network models |
+| 🌍 **12 Languages** | English, German, French, Spanish, Italian, Portuguese, Dutch, Polish, Russian, Chinese, Japanese, Korean |
+| 📖 **Word Highlighting** | Follow along as words are highlighted during playback |
+| 🎨 **Customizable Player** | Match your theme with custom colors and styling |
+| ⬇️ **Download Audio** | Let visitors download audio files for offline listening |
+| 🎭 **Voice Presets** | Quick effects like Warm, Radio, Narrator, Deep, and more |
+| 💰 **100% Free** | No premium version, no limits, no hidden costs |
+| 🔒 **Privacy-First** | All processing happens locally in the browser |
 
-## 🚀 How It Works
+---
 
-1. Install and activate the plugin
-2. Go to **Settings → Speechable** to configure your preferences
-3. Edit any post and click **"Generate Audio"** in the sidebar
-4. The audio player automatically appears on your published posts
+## 🖼️ Screenshots
+
+<details>
+<summary>Click to view screenshots</summary>
+
+### Audio Player on Frontend
+The sleek audio player with word highlighting during playback.
+
+### Settings Page
+Configure voices, presets, colors, and display options.
+
+### Block Editor Integration
+Generate audio directly from the post editor sidebar.
+
+</details>
+
+---
+
+## 🚀 Quick Start
+
+### Installation
+
+**Option 1: Download & Install**
+
+<p align="center">
+  <a href="https://github.com/tansihmittal/speechable/releases/download/V1.0.1/speechable.zip">
+    <img src="https://img.shields.io/badge/⬇️_Download_ZIP-v1.0.1-2563eb?style=for-the-badge" alt="Download ZIP" />
+  </a>
+</p>
+
+1. Download the ZIP file above
+2. Go to **WordPress Admin → Plugins → Add New → Upload Plugin**
+3. Upload the ZIP file and click **Install Now**
+4. Activate the plugin
+
+**Option 2: From WordPress Admin**
+1. Go to **Plugins → Add New**
+2. Search for **"Speechable"**
+3. Click **"Install Now"** and then **"Activate"**
+
+**Option 3: Manual Installation**
+```bash
+cd wp-content/plugins/
+git clone https://github.com/tansihmittal/speechable.git
+```
+
+### How It Works
+
+1. **Configure** - Go to **Settings → Speechable** to set your preferences
+2. **Generate** - Edit any post and click **"Generate Audio"** in the sidebar
+3. **Publish** - The audio player automatically appears on your published posts
+
+---
 
 ## 🎭 Voice Presets
 
 Transform your audio with one-click presets:
 
-| Preset | Effect |
-|--------|--------|
-| **Default** | Natural voice |
-| **Radio** | Broadcast quality |
-| **Stadium** | Echo effect |
-| **Cave** | Deep reverb |
-| **Chipmunk** | High-pitched fun |
-| **Deep** | Low bass voice |
-| **Robot** | Mechanical tone |
-| **Telephone** | Phone quality |
-| **Megaphone** | Announcement style |
-| **Giant** | Booming voice |
-| **Fairy** | Magical high voice |
-| **Narrator** | Audiobook style |
+| Preset | Pitch | Reverb | Best For |
+|--------|-------|--------|----------|
+| 🎤 **Default** | 0 | 0% | Natural voice |
+| ☀️ **Warm** | -1 | 10% | Friendly content |
+| ✨ **Bright** | +1 | 5% | Energetic content |
+| 📻 **Radio** | 0 | 15% | Broadcast quality |
+| 📖 **Narrator** | -2 | 20% | Audiobook style |
+| 🎙️ **Podcast** | 0 | 8% | Conversational |
+| 🎸 **Deep** | -4 | 12% | Low bass voice |
+| 🌸 **Soft** | +2 | 18% | Gentle content |
+| 🏠 **Room** | 0 | 35% | Room ambience |
+| 🏛️ **Hall** | 0 | 50% | Concert hall |
+| � **hTelephone** | +2 | 3% | Phone quality |
+| 📼 **Vintage** | -1 | 25% | Retro feel |
+
+---
+
+## 🌍 Supported Languages
+
+<table>
+<tr>
+<td>🇺🇸 English (US)</td>
+<td>🇬🇧 English (UK)</td>
+<td>🇩🇪 German</td>
+<td>🇫🇷 French</td>
+</tr>
+<tr>
+<td>🇪🇸 Spanish</td>
+<td>🇮🇹 Italian</td>
+<td>🇵🇹 Portuguese</td>
+<td>🇳🇱 Dutch</td>
+</tr>
+<tr>
+<td>🇵🇱 Polish</td>
+<td>🇷🇺 Russian</td>
+<td>🇨🇳 Chinese</td>
+<td>🇯🇵 Japanese</td>
+</tr>
+<tr>
+<td>🇰🇷 Korean</td>
+<td colspan="3"></td>
+</tr>
+</table>
+
+---
 
 ## 💡 Perfect For
 
-- **Bloggers** - Give readers an audio option
-- **News Sites** - Accessibility for all visitors
-- **Educational Content** - Help students learn
-- **Accessibility** - Support visually impaired users
-- **Podcasters** - Quick audio versions of written content
+- **📝 Bloggers** - Give readers an audio option
+- **📰 News Sites** - Accessibility for all visitors
+- **🎓 Educational Content** - Help students learn
+- **♿ Accessibility** - Support visually impaired users
+- **🎧 Podcasters** - Quick audio versions of written content
 
-## 📦 Installation
-
-### From WordPress Admin
-
-1. Go to **Plugins → Add New**
-2. Search for **"Speechable"**
-3. Click **"Install Now"** and then **"Activate"**
-4. Go to **Settings → Speechable** to configure
-
-### Manual Installation
-
-1. Download the latest release
-2. Upload the `speechable` folder to `/wp-content/plugins/`
-3. Activate the plugin through the **'Plugins'** menu in WordPress
-4. Go to **Settings → Speechable** to configure options
+---
 
 ## ⚙️ Requirements
 
-- WordPress 5.8 or higher
-- PHP 7.4 or higher
-- Modern browser (Chrome, Firefox, Safari, Edge)
+| Requirement | Minimum |
+|-------------|---------|
+| WordPress | 5.8+ |
+| PHP | 7.4+ |
+| Browser | Chrome, Firefox, Safari, Edge |
+
+---
 
 ## 🔧 Third-Party Services
 
-This plugin uses the following third-party services:
+This plugin uses the following third-party services for text-to-speech functionality:
 
 ### Piper TTS Web Library
-- **Service**: [Piper TTS Web](https://github.com/Mintplex-Labs/piper-tts-web)
-- **Voice Models**: Downloaded from [Hugging Face](https://huggingface.co/rhasspy/piper-voices)
+- **Service**: [Piper TTS Web](https://github.com/Mintplex-Labs/piper-tts-web) by Mintplex Labs
+- **CDN**: jsDelivr (`cdn.jsdelivr.net`)
 - **License**: [MIT License](https://github.com/Mintplex-Labs/piper-tts-web/blob/main/LICENSE)
-- **Privacy**: Voice models are downloaded to your browser's local storage. Your content is processed locally and is not sent to any external server.
+
+### Voice Models
+- **Source**: [Hugging Face](https://huggingface.co/diffusionstudio/piper-voices)
+- **Downloaded**: On first use of each voice
+- **Cached**: Locally in browser storage
+
+### Whisper (Word Timestamps)
+- **Service**: [Hugging Face Transformers.js](https://huggingface.co/docs/transformers.js)
+- **Model**: Xenova/whisper-tiny.en (~75MB)
+- **License**: [Apache 2.0](https://github.com/huggingface/transformers.js/blob/main/LICENSE)
+
+> **🔒 Privacy Note**: Your content is processed locally in your browser and is **NOT** sent to any external server. Voice models are downloaded once and cached locally.
+
+---
 
 ## ❓ FAQ
 
-### Does this plugin require an API key?
+<details>
+<summary><strong>Does this plugin require an API key?</strong></summary>
+
 No! Speechable uses Piper TTS which runs entirely in your browser. No API keys, no external services, no monthly fees.
+</details>
 
-### What languages are supported?
-Speechable supports 12 languages: English (US & UK), German, French, Spanish, Italian, Portuguese, Dutch, Polish, Russian, Chinese, Japanese, and Korean.
+<details>
+<summary><strong>Will this slow down my website?</strong></summary>
 
-### Will this slow down my website?
 No. The TTS processing happens in the browser when generating audio in the admin. The frontend player is lightweight and only loads on posts with audio.
+</details>
 
-### Can visitors download the audio?
+<details>
+<summary><strong>Can visitors download the audio?</strong></summary>
+
 Yes! There's a download button on the player that lets visitors save the audio file.
+</details>
 
-### Does word highlighting work on all themes?
+<details>
+<summary><strong>Does word highlighting work on all themes?</strong></summary>
+
 Word highlighting works with most themes. It automatically detects your content area and highlights words as they're spoken.
+</details>
 
-### Is the audio stored on my server?
+<details>
+<summary><strong>Is the audio stored on my server?</strong></summary>
+
 Yes, the generated audio is stored as post meta data. This ensures fast playback without regenerating audio each time.
+</details>
 
-### Can I customize the player appearance?
+<details>
+<summary><strong>Can I customize the player appearance?</strong></summary>
+
 Yes! You can customize colors for the background, buttons, progress bar, text, and word highlighting. You can also adjust the border radius.
+</details>
 
-## 🔒 Privacy
-
-Your content is processed locally in the browser. Text is not sent to external servers. Voice models are downloaded once and cached locally.
+---
 
 ## 📝 Changelog
 
-### 1.0.0
+### v1.0.1
+- Added "How to Use" section in settings page
+- Added Custom preset for manual pitch/reverb adjustments
+- Fixed preset selection persistence after save
+- Updated documentation
+
+### v1.0.0
 - Initial release
 - AI-powered text-to-speech with Piper TTS
 - 12 language support with multiple voices
@@ -124,26 +247,50 @@ Your content is processed locally in the browser. Text is not sent to external s
 - Audio download functionality
 - Block editor integration
 
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
 ## 📄 License
 
-This project is licensed under the GPLv2 or later - see the [LICENSE](https://www.gnu.org/licenses/gpl-2.0.html) for details.
+This project is licensed under the GPLv2 or later - see the [LICENSE](LICENSE.txt) file for details.
+
+---
 
 ## 👨‍💻 Credits
 
 - **Developer**: [Tanish Mittal](https://tanishmittal.com)
 - **TTS Engine**: [Piper TTS](https://github.com/rhasspy/piper) - A fast, local neural text-to-speech system
+- **Web Library**: [Piper TTS Web](https://github.com/Mintplex-Labs/piper-tts-web) by Mintplex Labs
 - **Icons**: Lucide Icons (MIT License)
-
-## 🔗 Links
-
-- [WordPress Plugin Page](https://wordpress.org/plugins/speechable/)
-- [Support](https://tanishmittal.com?ref=speechable)
-- [Report Issues](https://github.com/yourusername/speechable/issues)
 
 ---
 
-Made with ❤️ by [Tanish Mittal](https://tanishmittal.com)
+## 🔗 Links
+
+<p align="center">
+  <a href="https://wordpress.org/plugins/speechable/">WordPress Plugin Page</a> •
+  <a href="https://tanishmittal.com?ref=speechable">Support</a> •
+  <a href="https://github.com/tansihmittal/speechable/issues">Report Issues</a> •
+  <a href="https://github.com/tansihmittal/speechable/releases">All Releases</a>
+</p>
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://tanishmittal.com">Tanish Mittal</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/tansihmittal/speechable/stargazers">⭐ Star this repo if you find it useful!</a>
+</p>

@@ -4,7 +4,7 @@ Donate link: https://tanishmittal.com?ref=speechable
 Tags: text-to-speech, tts, audio, accessibility, voice
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -216,6 +216,12 @@ Yes! You can customize colors for the background, buttons, progress bar, text, a
 5. Player customization options
 
 == Changelog ==
+
+= 1.0.1 =
+* Added "How to Use" section in settings page
+* Added Custom preset for manual pitch/reverb adjustments
+* Fixed preset selection persistence after save
+* Updated documentation
 
 = 1.0.0 =
 * Initial release
