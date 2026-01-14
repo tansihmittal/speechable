@@ -221,12 +221,14 @@
 
             nodes.forEach( ( node ) => {
                 const text = node.textContent;
+                // Split by whitespace but keep the delimiters
                 const parts = text.split( /(\s+)/ );
                 const frag = document.createDocumentFragment();
 
-                parts.forEach( ( part ) => {
+                parts.forEach( ( part, index ) => {
                     if ( /^\s+$/.test( part ) ) {
-                        frag.appendChild( document.createTextNode( part ) );
+                        // Preserve whitespace - use a single space to normalize
+                        frag.appendChild( document.createTextNode( ' ' ) );
                     } else if ( part ) {
                         const span = document.createElement( 'span' );
                         span.textContent = part;
@@ -236,7 +238,10 @@
                     }
                 } );
 
-                node.parentNode.replaceChild( frag, node );
+                // Only replace if we have content
+                if ( frag.childNodes.length > 0 ) {
+                    node.parentNode.replaceChild( frag, node );
+                }
             } );
 
             return idx;

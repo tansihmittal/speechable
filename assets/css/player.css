@@ -1,9 +1,6 @@
 /**
  * Speechable Player Styles
  *
- * Scoped styles with high specificity to prevent theme conflicts
- * (Elementor, WP Rocket, Divi, Astra, etc.)
- *
  * @package Speechable
  */
 
@@ -29,23 +26,17 @@
     line-height: 1.5 !important;
     color: var(--speechable-text, #1a1a1a) !important;
     box-sizing: border-box !important;
-    overflow: visible !important;
-    visibility: visible !important;
-    opacity: 1 !important;
 }
 
 /* Play button */
 .speechable-player .speechable-play {
     display: flex !important;
-    flex-direction: row !important;
     align-items: center !important;
     justify-content: center !important;
     width: 40px !important;
     min-width: 40px !important;
-    max-width: 40px !important;
     height: 40px !important;
     min-height: 40px !important;
-    max-height: 40px !important;
     padding: 0 !important;
     margin: 0 !important;
     border: none !important;
@@ -54,17 +45,11 @@
     color: #ffffff !important;
     cursor: pointer !important;
     flex-shrink: 0 !important;
-    flex-grow: 0 !important;
     box-sizing: border-box !important;
-    transition: opacity 0.15s ease !important;
-    box-shadow: none !important;
-    outline: none !important;
 }
 
-.speechable-player .speechable-play:hover,
-.speechable-player .speechable-play:focus {
+.speechable-player .speechable-play:hover {
     opacity: 0.9 !important;
-    background: var(--speechable-button, #2563eb) !important;
 }
 
 .speechable-player .speechable-play svg {
@@ -72,91 +57,60 @@
     width: 20px !important;
     height: 20px !important;
     fill: currentColor !important;
-    stroke: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.speechable-player .speechable-play svg.icon-pause {
-    display: none !important;
-}
-
-.speechable-player .speechable-play.is-playing svg.icon-play {
-    display: none !important;
-}
-
-.speechable-player .speechable-play.is-playing svg.icon-pause {
-    display: block !important;
 }
 
 /* Progress wrapper */
 .speechable-player .speechable-progress-wrap {
-    display: block !important;
     flex: 1 1 auto !important;
     min-width: 80px !important;
-    width: auto !important;
     height: 20px !important;
     padding: 8px 0 !important;
     margin: 0 !important;
     cursor: pointer !important;
     background: transparent !important;
     box-sizing: border-box !important;
-    position: relative !important;
 }
 
-/* Progress bar */
+/* Progress bar - the track */
 .speechable-player .speechable-progress-bar {
-    display: block !important;
     width: 100% !important;
     height: 4px !important;
-    min-height: 4px !important;
-    max-height: 4px !important;
     padding: 0 !important;
     margin: 0 !important;
-    background: #e5e7eb !important;
+    background-color: #e5e7eb !important;
     border-radius: 2px !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
+    overflow: visible !important;
     position: relative !important;
+    box-sizing: border-box !important;
 }
 
-/* Progress fill */
+/* Progress fill - the colored part */
 .speechable-player .speechable-progress-fill {
-    display: block !important;
-    width: 0 !important;
     height: 4px !important;
     min-height: 4px !important;
-    max-height: 4px !important;
     padding: 0 !important;
     margin: 0 !important;
-    background: var(--speechable-progress, #2563eb) !important;
+    background-color: var(--speechable-progress, #2563eb) !important;
     border-radius: 2px !important;
-    transition: width 0.1s linear !important;
-    box-sizing: border-box !important;
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
+    box-sizing: border-box !important;
+    transition: width 0.1s linear !important;
 }
 
 /* Time displays */
 .speechable-player .speechable-time,
 .speechable-player .speechable-duration {
-    display: inline-block !important;
     min-width: 36px !important;
-    width: auto !important;
-    height: auto !important;
     padding: 0 !important;
     margin: 0 !important;
-    font-family: inherit !important;
     font-size: 13px !important;
     font-weight: 400 !important;
-    line-height: 1.5 !important;
     text-align: center !important;
     color: var(--speechable-text, #1a1a1a) !important;
-    background: transparent !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
-    box-sizing: border-box !important;
 }
 
 .speechable-player .speechable-time::after {
@@ -166,19 +120,12 @@
 
 /* Speed button */
 .speechable-player .speechable-speed {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
     min-width: 32px !important;
-    width: auto !important;
     height: 28px !important;
     padding: 4px 8px !important;
     margin: 0 !important;
-    font-family: inherit !important;
     font-size: 12px !important;
     font-weight: 500 !important;
-    line-height: 1 !important;
-    text-align: center !important;
     color: var(--speechable-text, #1a1a1a) !important;
     background: transparent !important;
     border: 1px solid #e5e7eb !important;
@@ -186,13 +133,9 @@
     cursor: pointer !important;
     flex-shrink: 0 !important;
     box-sizing: border-box !important;
-    transition: background 0.15s ease !important;
-    box-shadow: none !important;
-    outline: none !important;
 }
 
-.speechable-player .speechable-speed:hover,
-.speechable-player .speechable-speed:focus {
+.speechable-player .speechable-speed:hover {
     background: #f3f4f6 !important;
 }
 
@@ -203,10 +146,8 @@
     justify-content: center !important;
     width: 32px !important;
     min-width: 32px !important;
-    max-width: 32px !important;
     height: 32px !important;
     min-height: 32px !important;
-    max-height: 32px !important;
     padding: 0 !important;
     margin: 0 !important;
     background: transparent !important;
@@ -215,31 +156,23 @@
     color: var(--speechable-text, #1a1a1a) !important;
     cursor: pointer !important;
     flex-shrink: 0 !important;
-    flex-grow: 0 !important;
     box-sizing: border-box !important;
-    transition: all 0.15s ease !important;
-    box-shadow: none !important;
-    outline: none !important;
 }
 
-.speechable-player .speechable-download:hover,
-.speechable-player .speechable-download:focus {
+.speechable-player .speechable-download:hover {
     background: var(--speechable-button, #2563eb) !important;
     border-color: var(--speechable-button, #2563eb) !important;
     color: #ffffff !important;
 }
 
 .speechable-player .speechable-download svg {
-    display: block !important;
     width: 16px !important;
     height: 16px !important;
     stroke: currentColor !important;
     fill: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media screen and (max-width: 480px) {
     .speechable-player {
         flex-wrap: wrap !important;
@@ -250,26 +183,25 @@
     .speechable-player .speechable-progress-wrap {
         order: 10 !important;
         flex: 1 1 100% !important;
-        min-width: 100% !important;
-    }
-    
-    .speechable-player .speechable-time,
-    .speechable-player .speechable-duration {
-        font-size: 12px !important;
-        min-width: 30px !important;
+        width: 100% !important;
     }
 }
 
-/* Word highlighting styles - minimal styling to preserve text flow */
-span.speechable-word {
-    display: inline !important;
-    border-radius: 2px;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+/* Word highlighting - MUST preserve spaces */
+.speechable-word {
+    /* No display changes - keep inline flow */
+    white-space: pre-wrap !important;
+    word-spacing: normal !important;
 }
 
-span.speechable-word.speechable-highlight {
-    background: var(--speechable-highlight, #fef08a) !important;
-    border-radius: 2px;
-    box-shadow: 0 0 0 2px var(--speechable-highlight, #fef08a);
+.speechable-highlight {
+    background-color: var(--speechable-highlight, #fef08a) !important;
+    border-radius: 2px !important;
+    box-shadow: 0 0 0 2px var(--speechable-highlight, #fef08a) !important;
+}
+
+/* Ensure parent containers preserve whitespace */
+[data-speechable-wrapped="true"] {
+    white-space: pre-wrap !important;
+    word-spacing: normal !important;
 }
