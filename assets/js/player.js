@@ -89,6 +89,7 @@
         } );
 
         audio.addEventListener( 'ended', () => {
+            playBtn.classList.remove( 'is-playing' );
             iconPlay.style.display = '';
             iconPause.style.display = 'none';
             clearAllHighlights();
@@ -96,12 +97,14 @@
         } );
 
         audio.addEventListener( 'pause', () => {
+            playBtn.classList.remove( 'is-playing' );
             iconPlay.style.display = '';
             iconPause.style.display = 'none';
             stopHighlightLoop();
         } );
 
         audio.addEventListener( 'play', () => {
+            playBtn.classList.add( 'is-playing' );
             iconPlay.style.display = 'none';
             iconPause.style.display = '';
             playCount++;
