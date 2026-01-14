@@ -46,6 +46,8 @@
     cursor: pointer !important;
     flex-shrink: 0 !important;
     box-sizing: border-box !important;
+    overflow: hidden !important;
+    position: relative !important;
 }
 
 .speechable-player .speechable-play:hover {
@@ -57,6 +59,18 @@
     width: 20px !important;
     height: 20px !important;
     fill: currentColor !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.speechable-player .speechable-play svg.icon-play {
+    display: block !important;
+}
+
+.speechable-player .speechable-play svg.icon-pause {
+    display: none !important;
 }
 
 /* Progress wrapper */
