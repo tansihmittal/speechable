@@ -32,15 +32,12 @@
         let wordElements = [];
         let wordsWrapped = false;
         let animationFrameId = null;
-        let playCount = 0;
-        let lastHighlightTime = 0;
         const speeds = [ 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2 ];
         let speedIndex = 2; // Default 1x
 
         if ( timingsData && highlighting ) {
             try {
                 const parsed = JSON.parse( timingsData );
-                // Validate that it's an array of timing objects
                 if ( Array.isArray( parsed ) ) {
                     wordTimings = parsed.filter( t => 
                         typeof t === 'object' && 
@@ -68,24 +65,6 @@
             const pct = ( audio.currentTime / audio.duration ) * 100;
             progressFill.style.width = pct + '%';
             timeDisplay.textContent = formatTime( audio.currentTime );
-
-            // Only highlight on FIRST playback (playCount === 1)
-            if ( highlighting && wordTimings.length && playCount === 1 ) {
-                const now = Date.now();
-                // Throttle to ~60fps for smoother highlighting
-                if ( now - lastHighlightTime > 16 ) {
-                    // audio.currentTime is already in real-time (accounts for playbackRate)
-                    // so we just need to convert to milliseconds
-                    highlightWord( audio.currentTime * 1000 );
-                    lastHighlightTime = now;
-                }
-            }
-        } );
-
-        // Update highlighting when playback rate changes
-        audio.addEventListener( 'ratechange', () => {
-            // The audio.currentTime automatically adjusts for playback rate
-            // so highlighting will naturally sync - no additional adjustment needed
         } );
 
         audio.addEventListener( 'ended', () => {
@@ -107,7 +86,6 @@
             playBtn.classList.add( 'is-playing' );
             iconPlay.style.display = 'none';
             iconPause.style.display = '';
-            playCount++;
             
             // Wrap words on first play only
             if ( highlighting && ! wordsWrapped && wordTimings.length ) {
@@ -145,7 +123,6 @@
                 const link = document.createElement( 'a' );
                 link.href = audioData;
                 
-                // Get post title for filename or use default
                 const titleEl = document.querySelector( 'h1.entry-title, h1.post-title, .entry-title, .post-title, article > header h1' );
                 const title = titleEl ? titleEl.textContent.trim().replace( /[^a-z0-9]/gi, '-' ).toLowerCase() : 'audio';
                 link.download = title + '.wav';
@@ -162,8 +139,9 @@
             const titleEl = document.querySelector( 'h1.entry-title, h1.post-title, .entry-title, .post-title, article > header h1, .single h1' )
                 || article?.querySelector( 'h1, h2.entry-title' );
             
-            const content = document.querySelector( '.entry-content, .post-content, article .content, .single-content' )
-                || article?.querySelector( '.entry-content, .post-content, .content' );
+            const content = document.querySelector( '.entry-content, .post-content, article .content, .single-content, .elementor-widget-theme-post-content' )
+                || article?.querySelector( '.entry-content, .post-content, .content' )
+                || document.querySelector( '.elementor-widget-container' );
 
             if ( ! content && ! titleEl ) return;
 
@@ -181,7 +159,7 @@
 
             wordElements = [];
             for ( let i = 0; i < idx; i++ ) {
-                const el = document.querySelector( `.speechable-word[data-word-index="${ i }"]` );
+                const el = document.querySelector( '[data-word-index="' + i + '"]' );
                 if ( el ) wordElements.push( el );
             }
         }
@@ -192,7 +170,6 @@
                 NodeFilter.SHOW_TEXT, 
                 {
                     acceptNode: function( node ) {
-                        // Skip nodes inside speechable-player or other excluded elements
                         let parent = node.parentNode;
                         while ( parent && parent !== container ) {
                             if ( parent.classList && ( 
@@ -219,28 +196,43 @@
 
             let idx = startIdx;
 
-            nodes.forEach( ( node ) => {
+            nodes.forEach( function( node ) {
                 const text = node.textContent;
-                // Split by whitespace but keep the delimiters
-                const parts = text.split( /(\s+)/ );
-                const frag = document.createDocumentFragment();
-
-                parts.forEach( ( part, index ) => {
-                    if ( /^\s+$/.test( part ) ) {
-                        // Preserve whitespace - use a single space to normalize
-                        frag.appendChild( document.createTextNode( ' ' ) );
-                    } else if ( part ) {
-                        const span = document.createElement( 'span' );
-                        span.textContent = part;
-                        span.dataset.wordIndex = idx++;
-                        span.className = 'speechable-word';
-                        frag.appendChild( span );
+                const parent = node.parentNode;
+                
+                // Create a temporary container
+                const temp = document.createElement( 'span' );
+                temp.style.cssText = 'display:contents;';
+                
+                // Split text into words and spaces
+                const regex = /(\S+)/g;
+                let lastIndex = 0;
+                let match;
+                
+                while ( ( match = regex.exec( text ) ) !== null ) {
+                    // Add any whitespace before this word
+                    if ( match.index > lastIndex ) {
+                        temp.appendChild( document.createTextNode( text.substring( lastIndex, match.index ) ) );
                     }
-                } );
-
-                // Only replace if we have content
-                if ( frag.childNodes.length > 0 ) {
-                    node.parentNode.replaceChild( frag, node );
+                    
+                    // Add the word wrapped in a span
+                    const span = document.createElement( 'span' );
+                    span.className = 'speechable-word';
+                    span.setAttribute( 'data-word-index', idx++ );
+                    span.textContent = match[ 1 ];
+                    temp.appendChild( span );
+                    
+                    lastIndex = regex.lastIndex;
+                }
+                
+                // Add any remaining whitespace
+                if ( lastIndex < text.length ) {
+                    temp.appendChild( document.createTextNode( text.substring( lastIndex ) ) );
+                }
+                
+                // Replace the text node with our wrapped content
+                if ( temp.childNodes.length > 0 ) {
+                    parent.replaceChild( temp, node );
                 }
             } );
 
@@ -248,10 +240,9 @@
         }
 
         function highlightWord( ms ) {
-            // Find the timing entry for current playback position
             let timingIndex = -1;
             
-            // Binary search for the timing entry
+            // Binary search
             let low = 0;
             let high = wordTimings.length - 1;
             
@@ -269,7 +260,7 @@
                 }
             }
             
-            // If no exact match, find the closest upcoming word
+            // Find closest if no exact match
             if ( timingIndex === -1 ) {
                 for ( let i = 0; i < wordTimings.length; i++ ) {
                     if ( ms < wordTimings[ i ].end ) {
@@ -281,15 +272,15 @@
 
             if ( timingIndex === -1 ) return;
 
-            // Map timing index to DOM element index
-            // If word counts differ, use proportional mapping
+            // Map timing index to DOM element
             let domIndex;
             if ( wordElements.length === wordTimings.length ) {
                 domIndex = timingIndex;
-            } else {
-                // Proportional mapping: timing position -> DOM position
-                const ratio = timingIndex / ( wordTimings.length - 1 );
+            } else if ( wordElements.length > 0 && wordTimings.length > 0 ) {
+                const ratio = timingIndex / Math.max( 1, wordTimings.length - 1 );
                 domIndex = Math.round( ratio * ( wordElements.length - 1 ) );
+            } else {
+                return;
             }
             
             if ( domIndex < 0 || domIndex >= wordElements.length ) return;
@@ -301,7 +292,6 @@
                 el.classList.add( 'speechable-highlight' );
                 currentHighlight = el;
                 
-                // Scroll into view if enabled and needed (smooth)
                 if ( autoScroll ) {
                     const rect = el.getBoundingClientRect();
                     const viewHeight = window.innerHeight;
@@ -313,7 +303,7 @@
         }
 
         function clearAllHighlights() {
-            document.querySelectorAll( '.speechable-highlight' ).forEach( el => {
+            document.querySelectorAll( '.speechable-highlight' ).forEach( function( el ) {
                 el.classList.remove( 'speechable-highlight' );
             } );
             currentHighlight = null;
@@ -328,8 +318,7 @@
                 if ( ! audio.paused ) {
                     const currentMs = audio.currentTime * 1000;
                     
-                    // Only update if time has changed significantly (50ms threshold)
-                    if ( Math.abs( currentMs - lastMs ) > 50 ) {
+                    if ( Math.abs( currentMs - lastMs ) > 30 ) {
                         highlightWord( currentMs );
                         lastMs = currentMs;
                     }

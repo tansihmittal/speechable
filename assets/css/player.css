@@ -55,7 +55,6 @@
 }
 
 .speechable-player .speechable-play svg {
-    display: block !important;
     width: 20px !important;
     height: 20px !important;
     fill: currentColor !important;
@@ -85,7 +84,7 @@
     box-sizing: border-box !important;
 }
 
-/* Progress bar - the track */
+/* Progress bar */
 .speechable-player .speechable-progress-bar {
     width: 100% !important;
     height: 4px !important;
@@ -98,10 +97,9 @@
     box-sizing: border-box !important;
 }
 
-/* Progress fill - the colored part */
+/* Progress fill */
 .speechable-player .speechable-progress-fill {
     height: 4px !important;
-    min-height: 4px !important;
     padding: 0 !important;
     margin: 0 !important;
     background-color: var(--speechable-progress, #2563eb) !important;
@@ -201,21 +199,13 @@
     }
 }
 
-/* Word highlighting - MUST preserve spaces */
+/* Word highlighting */
 .speechable-word {
-    /* No display changes - keep inline flow */
-    white-space: pre-wrap !important;
-    word-spacing: normal !important;
+    transition: background-color 0.1s ease, box-shadow 0.1s ease;
 }
 
 .speechable-highlight {
     background-color: var(--speechable-highlight, #fef08a) !important;
-    border-radius: 2px !important;
-    box-shadow: 0 0 0 2px var(--speechable-highlight, #fef08a) !important;
-}
-
-/* Ensure parent containers preserve whitespace */
-[data-speechable-wrapped="true"] {
-    white-space: pre-wrap !important;
-    word-spacing: normal !important;
+    border-radius: 2px;
+    box-shadow: 0 0 0 2px var(--speechable-highlight, #fef08a);
 }
