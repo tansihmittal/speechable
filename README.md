@@ -7,13 +7,13 @@ Convert your WordPress posts to natural-sounding audio with AI-powered text-to-s
 [![WordPress](https://img.shields.io/badge/WordPress-5.8+-blue.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4+-purple.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPLv2-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/Version-1.0.1-orange.svg)](https://github.com/tansihmittal/speechable/releases)
+[![Version](https://img.shields.io/badge/Version-1.0.2-orange.svg)](https://github.com/tansihmittal/speechable/releases)
 
 ---
 
 <p align="center">
-  <a href="https://github.com/tansihmittal/speechable/releases/download/V1.0.1/speechable.zip">
-    <img src="https://img.shields.io/badge/⬇️_Download_Plugin-v1.0.1-2563eb?style=for-the-badge&logo=wordpress" alt="Download Plugin" />
+  <a href="https://github.com/tansihmittal/speechable/releases/download/V1.0.2/speechable.zip">
+    <img src="https://img.shields.io/badge/⬇️_Download_Plugin-v1.0.2-2563eb?style=for-the-badge&logo=wordpress" alt="Download Plugin" />
   </a>
   &nbsp;&nbsp;
   <a href="https://wordpress.org/plugins/speechable/">
@@ -67,8 +67,8 @@ Generate audio directly from the post editor sidebar.
 **Option 1: Download & Install**
 
 <p align="center">
-  <a href="https://github.com/tansihmittal/speechable/releases/download/V1.0.1/speechable.zip">
-    <img src="https://img.shields.io/badge/⬇️_Download_ZIP-v1.0.1-2563eb?style=for-the-badge" alt="Download ZIP" />
+  <a href="https://github.com/tansihmittal/speechable/releases/download/V1.0.2/speechable.zip">
+    <img src="https://img.shields.io/badge/⬇️_Download_ZIP-v1.0.2-2563eb?style=for-the-badge" alt="Download ZIP" />
   </a>
 </p>
 
@@ -286,7 +286,7 @@ Yes! You can customize colors for the background, buttons, progress bar, text, a
 - Added AJAX endpoint for loading player HTML dynamically
 - Fixed unused variable warning in player.js
 
-### v1.0.1
+### v1.0.2
 - Added "How to Use" section in settings page
 - Added Custom preset for manual pitch/reverb adjustments
 - Fixed preset selection persistence after save
