@@ -187,26 +187,87 @@
 
     // Color input listeners
     function initColorInputs() {
-        [ 'speechable-color-bg', 'speechable-color-text', 'speechable-color-button', 'speechable-color-progress' ].forEach( function( id ) {
+        // Light mode colors
+        [ 'speechable-color-bg', 'speechable-color-text', 'speechable-color-button', 'speechable-color-progress', 'speechable-color-border', 'speechable-color-progress-bg' ].forEach( function( id ) {
             const el = document.getElementById( id );
             if ( el ) {
-                el.addEventListener( 'input', updatePreview );
+                el.addEventListener( 'input', function() {
+                    updatePreview( false );
+                } );
+            }
+        } );
+
+        // Dark mode colors
+        [ 'speechable-dark-bg', 'speechable-dark-text', 'speechable-dark-button', 'speechable-dark-progress', 'speechable-dark-border', 'speechable-dark-progress-bg' ].forEach( function( id ) {
+            const el = document.getElementById( id );
+            if ( el ) {
+                el.addEventListener( 'input', function() {
+                    updatePreview( true );
+                } );
             }
         } );
     }
 
+    // Color scheme selector
+    function initColorScheme() {
+        const schemeOptions = document.querySelectorAll( '.speechable-scheme-option' );
+        
+        schemeOptions.forEach( function( option ) {
+            option.addEventListener( 'click', function() {
+                schemeOptions.forEach( function( opt ) {
+                    opt.classList.remove( 'active' );
+                } );
+                this.classList.add( 'active' );
+            } );
+        } );
+    }
+
+    // Preview mode toggle (light/dark)
+    function initPreviewToggle() {
+        const toggleBtn = document.getElementById( 'speechable-preview-mode' );
+        const previewBox = toggleBtn ? toggleBtn.closest( '.speechable-preview-box' ) : null;
+        
+        if ( ! toggleBtn || ! previewBox ) {
+            return;
+        }
+
+        let isDarkPreview = false;
+
+        toggleBtn.addEventListener( 'click', function() {
+            isDarkPreview = ! isDarkPreview;
+            previewBox.classList.toggle( 'dark-preview', isDarkPreview );
+            toggleBtn.classList.toggle( 'dark-mode', isDarkPreview );
+            
+            const lightIcon = toggleBtn.querySelector( '.light-icon' );
+            const darkIcon = toggleBtn.querySelector( '.dark-icon' );
+            
+            if ( lightIcon ) {
+                lightIcon.style.display = isDarkPreview ? 'none' : 'block';
+            }
+            if ( darkIcon ) {
+                darkIcon.style.display = isDarkPreview ? 'block' : 'none';
+            }
+            
+            updatePreview( isDarkPreview );
+        } );
+    }
+
     // Preview update function
-    function updatePreview() {
+    function updatePreview( isDark ) {
         const preview = document.getElementById( 'speechable-preview' );
         if ( ! preview ) {
             return;
         }
 
-        const bgEl = document.getElementById( 'speechable-color-bg' );
+        const prefix = isDark ? 'speechable-dark-' : 'speechable-color-';
+        
+        const bgEl = document.getElementById( prefix + 'bg' );
         const radiusEl = document.getElementById( 'speechable-radius' );
-        const buttonEl = document.getElementById( 'speechable-color-button' );
-        const progressEl = document.getElementById( 'speechable-color-progress' );
-        const textEl = document.getElementById( 'speechable-color-text' );
+        const buttonEl = document.getElementById( prefix + 'button' );
+        const progressEl = document.getElementById( prefix + 'progress' );
+        const textEl = document.getElementById( prefix + 'text' );
+        const borderEl = document.getElementById( prefix + 'border' );
+        const progressBgEl = document.getElementById( prefix + 'progress-bg' );
 
         if ( bgEl ) {
             preview.style.background = bgEl.value;
@@ -214,10 +275,18 @@
         if ( radiusEl ) {
             preview.style.borderRadius = radiusEl.value + 'px';
         }
+        if ( borderEl ) {
+            preview.style.borderColor = borderEl.value;
+        }
 
         const previewBtn = preview.querySelector( '.speechable-preview-btn' );
         if ( previewBtn && buttonEl ) {
             previewBtn.style.background = buttonEl.value;
+        }
+
+        const previewBar = preview.querySelector( '.speechable-preview-bar' );
+        if ( previewBar && progressBgEl ) {
+            previewBar.style.background = progressBgEl.value;
         }
 
         const previewFill = preview.querySelector( '.speechable-preview-fill' );
@@ -228,6 +297,13 @@
         const previewTime = preview.querySelector( '.speechable-preview-time' );
         if ( previewTime && textEl ) {
             previewTime.style.color = textEl.value;
+        }
+
+        // Update speed button text color
+        const speedBtn = preview.querySelector( 'span[style*="border"]' );
+        if ( speedBtn && textEl && borderEl ) {
+            speedBtn.style.color = textEl.value;
+            speedBtn.style.borderColor = borderEl.value;
         }
     }
 
@@ -501,9 +577,11 @@
         initVoicePresets();
         initRangeInputs();
         initColorInputs();
+        initColorScheme();
+        initPreviewToggle();
         initLanguageFilter();
         initVoicePreview();
-        updatePreview();
+        updatePreview( false );
     }
 
     if ( document.readyState === 'loading' ) {

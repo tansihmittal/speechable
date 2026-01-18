@@ -4,23 +4,28 @@
  * @package Speechable
  */
 
+/* Generate Audio Button in Posts List */
 .speechable-gen-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 4px 10px;
     font-size: 12px;
+    font-weight: 500;
     border: 1px solid #2563eb;
     border-radius: 4px;
     background: #fff;
     color: #2563eb;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    line-height: 1.4;
 }
 
 .speechable-gen-btn:hover {
     background: #2563eb;
     color: #fff;
+    text-decoration: none;
 }
 
 .speechable-gen-btn.has-audio {
@@ -33,7 +38,7 @@
     color: #fff;
 }
 
-/* Modal */
+/* Modal Overlay */
 .speechable-modal-overlay {
     position: fixed;
     inset: 0;
@@ -42,16 +47,20 @@
     align-items: center;
     justify-content: center;
     z-index: 100000;
+    padding: 20px;
 }
 
+/* Modal Container */
 .speechable-modal {
     background: #fff;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    max-height: 80vh;
-    overflow: auto;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 480px;
+    max-height: calc(100vh - 40px);
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
 }
 
 .speechable-modal-header {
@@ -60,12 +69,14 @@
     justify-content: space-between;
     padding: 16px 20px;
     border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
 }
 
 .speechable-modal-header h3 {
     margin: 0;
     font-size: 16px;
     font-weight: 600;
+    color: #111827;
 }
 
 .speechable-modal-close {
@@ -75,14 +86,29 @@
     cursor: pointer;
     color: #6b7280;
     padding: 4px;
+    line-height: 1;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+}
+
+.speechable-modal-close:hover {
+    background: #f3f4f6;
+    color: #374151;
 }
 
 .speechable-modal-body {
     padding: 20px;
+    overflow-y: auto;
+    flex: 1;
 }
 
+/* Form Fields */
 .speechable-field {
     margin-bottom: 16px;
+}
+
+.speechable-field:last-child {
+    margin-bottom: 0;
 }
 
 .speechable-field label {
@@ -99,8 +125,18 @@
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 14px;
+    background: #fff;
+    color: #111827;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.speechable-field select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Progress Bar */
 .speechable-progress-container {
     margin: 16px 0;
 }
@@ -115,8 +151,9 @@
 .speechable-progress-inner {
     height: 100%;
     width: 0;
-    background: #2563eb;
-    transition: width 0.2s;
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    border-radius: 3px;
+    transition: width 0.2s ease;
 }
 
 .speechable-status {
@@ -125,8 +162,9 @@
     margin-top: 8px;
 }
 
+/* Error Message */
 .speechable-error {
-    padding: 8px 12px;
+    padding: 10px 14px;
     background: #fef2f2;
     border: 1px solid #fecaca;
     border-radius: 6px;
@@ -135,27 +173,32 @@
     margin-top: 12px;
 }
 
+/* Modal Footer */
 .speechable-modal-footer {
     display: flex;
     gap: 8px;
     justify-content: flex-end;
     padding: 16px 20px;
     border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+    flex-shrink: 0;
 }
 
+/* Buttons */
 .speechable-btn {
     padding: 8px 16px;
     border-radius: 6px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.15s ease;
+    border: none;
+    line-height: 1.4;
 }
 
 .speechable-btn-primary {
     background: #2563eb;
     color: #fff;
-    border: none;
 }
 
 .speechable-btn-primary:hover {
@@ -175,32 +218,36 @@
 
 .speechable-btn-secondary:hover {
     background: #f9fafb;
+    border-color: #9ca3af;
 }
 
 .speechable-btn-danger {
     background: #fff;
     color: #dc2626;
-    border: 1px solid #dc2626;
+    border: 1px solid #fecaca;
 }
 
 .speechable-btn-danger:hover {
     background: #fef2f2;
+    border-color: #dc2626;
 }
 
-/* Preview player */
+/* Preview Player in Modal */
 .speechable-preview-player {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 12px;
     background: #f9fafb;
-    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
     margin-top: 16px;
 }
 
 .speechable-preview-play {
     width: 32px;
     height: 32px;
+    min-width: 32px;
     border-radius: 50%;
     border: none;
     background: #2563eb;
@@ -209,6 +256,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.15s ease;
+}
+
+.speechable-preview-play:hover {
+    opacity: 0.85;
 }
 
 .speechable-preview-progress {
@@ -217,6 +269,7 @@
     background: #e5e7eb;
     border-radius: 2px;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .speechable-preview-progress-fill {
@@ -224,15 +277,18 @@
     background: #2563eb;
     border-radius: 2px;
     width: 0;
+    transition: width 0.1s linear;
 }
 
 .speechable-preview-time {
     font-size: 12px;
     color: #6b7280;
+    min-width: 70px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
 }
 
-
-/* Loading spinner */
+/* Loading Spinner */
 .speechable-loading-spinner {
     width: 32px;
     height: 32px;

@@ -4,7 +4,7 @@ Donate link: https://tanishmittal.com?ref=speechable
 Tags: text-to-speech, tts, audio, accessibility, voice
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -207,6 +207,18 @@ Yes, the generated audio is stored as post meta data. This ensures fast playback
 
 Yes! You can customize colors for the background, buttons, progress bar, text, and word highlighting. You can also adjust the border radius.
 
+= Is Speechable compatible with WP Rocket? =
+
+Yes! Speechable automatically excludes its JavaScript from WP Rocket's minification, concatenation, and delay JS features to ensure the player works correctly.
+
+= Does Speechable work with Elementor? =
+
+Yes! Speechable is fully compatible with Elementor and other page builders like Beaver Builder, Divi, WPBakery, Bricks, and Oxygen. The player automatically reinitializes when content is loaded dynamically.
+
+= Does Speechable work with caching plugins? =
+
+Yes! Speechable is compatible with WP Rocket, LiteSpeed Cache, W3 Total Cache, Autoptimize, and SG Optimizer. The plugin automatically configures the necessary exclusions.
+
 == Screenshots ==
 
 1. Audio player on the frontend with word highlighting
@@ -216,6 +228,14 @@ Yes! You can customize colors for the background, buttons, progress bar, text, a
 5. Player customization options
 
 == Changelog ==
+
+= 1.0.2 =
+* Added compatibility with WP Rocket (JS exclusions from minification/delay)
+* Added compatibility with LiteSpeed Cache, W3 Total Cache, Autoptimize, SG Optimizer
+* Added compatibility with Elementor, Beaver Builder, Divi, WPBakery, Bricks, Oxygen
+* Player now auto-reinitializes on dynamic content load (AJAX)
+* Added MutationObserver for detecting dynamically added players
+* Added AJAX endpoint for loading player HTML dynamically
 
 = 1.0.1 =
 * Added "How to Use" section in settings page
@@ -235,8 +255,8 @@ Yes! You can customize colors for the background, buttons, progress bar, text, a
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-Initial release of Speechable - Text to Speech for WordPress.
+= 1.0.2 =
+Improved compatibility with WP Rocket, Elementor, and other popular caching/page builder plugins.
 
 == Credits ==
 

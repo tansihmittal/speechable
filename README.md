@@ -166,6 +166,41 @@ Transform your audio with one-click presets:
 
 ---
 
+## 🔌 Plugin Compatibility
+
+Speechable is tested and compatible with popular WordPress plugins:
+
+### Caching & Optimization Plugins
+| Plugin | Status | Notes |
+|--------|--------|-------|
+| **WP Rocket** | ✅ Fully Compatible | JS automatically excluded from minification/delay |
+| **LiteSpeed Cache** | ✅ Fully Compatible | JS excluded from optimization |
+| **W3 Total Cache** | ✅ Fully Compatible | JS excluded from minification |
+| **Autoptimize** | ✅ Fully Compatible | JS excluded from concatenation |
+| **SG Optimizer** | ✅ Fully Compatible | JS excluded from combination |
+
+### Page Builders
+| Plugin | Status | Notes |
+|--------|--------|-------|
+| **Elementor** | ✅ Fully Compatible | Auto-reinitializes on widget render |
+| **Beaver Builder** | ✅ Fully Compatible | Hooks into layout render events |
+| **Divi Builder** | ✅ Fully Compatible | Supports dynamic module loading |
+| **WPBakery** | ✅ Fully Compatible | Works with shortcode output |
+| **Bricks Builder** | ✅ Fully Compatible | Supports AJAX page loading |
+| **Oxygen Builder** | ✅ Fully Compatible | Reinitializes on AJAX load |
+
+### Other Plugins
+| Plugin | Status | Notes |
+|--------|--------|-------|
+| **WPML** | ✅ Compatible | Works with multilingual content |
+| **Yoast SEO** | ✅ Compatible | No conflicts |
+| **Rank Math** | ✅ Compatible | No conflicts |
+| **WooCommerce** | ✅ Compatible | Works on product pages |
+
+> **Note**: If you encounter issues with any plugin not listed here, please [report it](https://github.com/tansihmittal/speechable/issues).
+
+---
+
 ## 🔧 Third-Party Services
 
 This plugin uses the following third-party services for text-to-speech functionality:
@@ -241,6 +276,15 @@ Yes! You can customize colors for the background, buttons, progress bar, text, a
 ---
 
 ## 📝 Changelog
+
+### v1.0.2
+- Added compatibility with WP Rocket (JS exclusions from minification/delay)
+- Added compatibility with LiteSpeed Cache, W3 Total Cache, Autoptimize, SG Optimizer
+- Added compatibility with Elementor, Beaver Builder, Divi, WPBakery, Bricks, Oxygen
+- Player now auto-reinitializes on dynamic content load (AJAX)
+- Added MutationObserver for detecting dynamically added players
+- Added AJAX endpoint for loading player HTML dynamically
+- Fixed unused variable warning in player.js
 
 ### v1.0.1
 - Added "How to Use" section in settings page

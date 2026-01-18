@@ -3,7 +3,7 @@
  * Plugin Name: Speechable
  * Plugin URI: https://github.com/tansihmittal/speechable/
  * Description: Convert posts to audio using AI-powered text-to-speech with word highlighting.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Tanish Mittal
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'SPEECHABLE_VERSION', '1.0.1' );
+define( 'SPEECHABLE_VERSION', '1.0.2' );
 define( 'SPEECHABLE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SPEECHABLE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'SPEECHABLE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -73,6 +73,238 @@ final class Speechable {
         add_action( 'wp_ajax_speechable_get_post_content', array( $this, 'ajax_get_post_content' ) );
         add_action( 'wp_ajax_speechable_delete_audio', array( $this, 'ajax_delete_audio' ) );
         add_action( 'wp_ajax_speechable_check_audio_batch', array( $this, 'ajax_check_audio_batch' ) );
+
+        // Plugin compatibility hooks.
+        $this->init_plugin_compatibility();
+    }
+
+    /**
+     * Initialize compatibility with popular plugins.
+     * Supports: WP Rocket, Elementor, LiteSpeed Cache, W3 Total Cache, Autoptimize, etc.
+     */
+    private function init_plugin_compatibility() {
+        // WP Rocket compatibility.
+        add_filter( 'rocket_exclude_js', array( $this, 'wp_rocket_exclude_js' ) );
+        add_filter( 'rocket_exclude_defer_js', array( $this, 'wp_rocket_exclude_js' ) );
+        add_filter( 'rocket_delay_js_exclusions', array( $this, 'wp_rocket_delay_js_exclusions' ) );
+        add_filter( 'rocket_minify_excluded_external_js', array( $this, 'wp_rocket_exclude_js' ) );
+
+        // LiteSpeed Cache compatibility.
+        add_filter( 'litespeed_optimize_js_excludes', array( $this, 'litespeed_exclude_js' ) );
+
+        // Autoptimize compatibility.
+        add_filter( 'autoptimize_filter_js_exclude', array( $this, 'autoptimize_exclude_js' ) );
+
+        // W3 Total Cache compatibility.
+        add_filter( 'w3tc_minify_js_do_tag_minification', array( $this, 'w3tc_exclude_js' ), 10, 3 );
+
+        // SG Optimizer compatibility.
+        add_filter( 'sgo_javascript_combine_exclude', array( $this, 'sg_optimizer_exclude_js' ) );
+
+        // Elementor compatibility.
+        add_action( 'elementor/frontend/after_enqueue_scripts', array( $this, 'elementor_enqueue_scripts' ) );
+        add_action( 'elementor/widget/render_content', array( $this, 'elementor_widget_content' ), 10, 2 );
+
+        // Beaver Builder compatibility.
+        add_filter( 'fl_builder_render_module_content', array( $this, 'page_builder_content' ), 10, 2 );
+
+        // Divi compatibility.
+        add_filter( 'et_builder_module_content', array( $this, 'page_builder_content' ), 10, 2 );
+
+        // WPBakery compatibility.
+        add_filter( 'vc_shortcode_output', array( $this, 'page_builder_content' ), 10, 2 );
+
+        // Bricks Builder compatibility.
+        add_filter( 'bricks/element/render', array( $this, 'page_builder_content' ), 10, 2 );
+
+        // AJAX/REST API content loading support.
+        add_action( 'wp_ajax_nopriv_speechable_get_player', array( $this, 'ajax_get_player_html' ) );
+        add_action( 'wp_ajax_speechable_get_player', array( $this, 'ajax_get_player_html' ) );
+    }
+
+    /**
+     * WP Rocket: Exclude Speechable JS from minification/concatenation.
+     *
+     * @param array $excluded_js Array of excluded JS files.
+     * @return array Modified array.
+     */
+    public function wp_rocket_exclude_js( $excluded_js ) {
+        $excluded_js[] = '/speechable/assets/js/(.*)';
+        $excluded_js[] = 'speechable-player';
+        $excluded_js[] = 'speechablePlayer';
+        return $excluded_js;
+    }
+
+    /**
+     * WP Rocket: Exclude from delay JS execution.
+     *
+     * @param array $exclusions Array of exclusions.
+     * @return array Modified array.
+     */
+    public function wp_rocket_delay_js_exclusions( $exclusions ) {
+        $exclusions[] = 'speechable';
+        $exclusions[] = 'speechable-player';
+        $exclusions[] = '/speechable/assets/js/';
+        return $exclusions;
+    }
+
+    /**
+     * LiteSpeed Cache: Exclude Speechable JS.
+     *
+     * @param array $excludes Array of excluded JS.
+     * @return array Modified array.
+     */
+    public function litespeed_exclude_js( $excludes ) {
+        $excludes[] = 'speechable';
+        $excludes[] = SPEECHABLE_PLUGIN_URL . 'assets/js/player.js';
+        return $excludes;
+    }
+
+    /**
+     * Autoptimize: Exclude Speechable JS.
+     *
+     * @param string $excludes Comma-separated list of exclusions.
+     * @return string Modified exclusions.
+     */
+    public function autoptimize_exclude_js( $excludes ) {
+        $speechable_excludes = 'speechable, speechable-player, speechablePlayer';
+        if ( ! empty( $excludes ) ) {
+            return $excludes . ', ' . $speechable_excludes;
+        }
+        return $speechable_excludes;
+    }
+
+    /**
+     * W3 Total Cache: Exclude Speechable JS from minification.
+     *
+     * @param bool   $do_minify Whether to minify.
+     * @param string $script_tag The script tag.
+     * @param string $file The file URL.
+     * @return bool Whether to minify.
+     */
+    public function w3tc_exclude_js( $do_minify, $script_tag, $file ) {
+        if ( strpos( $file, 'speechable' ) !== false ) {
+            return false;
+        }
+        return $do_minify;
+    }
+
+    /**
+     * SG Optimizer: Exclude Speechable JS from combination.
+     *
+     * @param array $exclude_list Array of excluded handles.
+     * @return array Modified array.
+     */
+    public function sg_optimizer_exclude_js( $exclude_list ) {
+        $exclude_list[] = 'speechable-player';
+        return $exclude_list;
+    }
+
+    /**
+     * Elementor: Enqueue scripts when Elementor frontend loads.
+     */
+    public function elementor_enqueue_scripts() {
+        if ( ! is_singular() ) {
+            return;
+        }
+
+        $post_id    = get_the_ID();
+        $audio_data = get_post_meta( $post_id, '_speechable_audio', true );
+
+        if ( ! empty( $audio_data ) ) {
+            $this->enqueue_frontend_assets();
+        }
+    }
+
+    /**
+     * Elementor: Process widget content for audio player.
+     *
+     * @param string $content Widget content.
+     * @param object $widget Widget instance.
+     * @return string Modified content.
+     */
+    public function elementor_widget_content( $content, $widget ) {
+        // Re-initialize players after Elementor renders content.
+        if ( ! empty( $content ) && strpos( $content, 'speechable-player' ) !== false ) {
+            $content .= '<script>if(typeof speechableInitPlayers === "function") speechableInitPlayers();</script>';
+        }
+        return $content;
+    }
+
+    /**
+     * Page builders: Process content for audio player re-initialization.
+     *
+     * @param string $content Module/element content.
+     * @param mixed  $module Module instance (varies by builder).
+     * @return string Modified content.
+     */
+    public function page_builder_content( $content, $module = null ) {
+        return $content;
+    }
+
+    /**
+     * AJAX: Get player HTML for dynamic loading.
+     */
+    public function ajax_get_player_html() {
+        // Verify nonce for security.
+        if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'speechable_player_nonce' ) ) {
+            wp_send_json_error( __( 'Security check failed.', 'speechable' ) );
+        }
+
+        $post_id = isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : 0;
+
+        if ( ! $post_id ) {
+            wp_send_json_error( __( 'Invalid post ID.', 'speechable' ) );
+        }
+
+        $options    = wp_parse_args( get_option( 'speechable_options', array() ), $this->get_default_settings() );
+        $audio_data = get_post_meta( $post_id, '_speechable_audio', true );
+
+        if ( empty( $audio_data ) ) {
+            wp_send_json_error( __( 'No audio available.', 'speechable' ) );
+        }
+
+        $word_timings = get_post_meta( $post_id, '_speechable_word_timings', true );
+
+        // Get progress color for inline style fallback
+        $progress_color = esc_attr( $options['color_progress'] ?? '#2563eb' );
+        $highlight_light = esc_attr( $options['color_highlight'] ?? '#fef08a' );
+        $highlight_dark = esc_attr( $options['dark_highlight'] ?? '#854d0e' );
+        $color_scheme = esc_attr( $options['color_scheme'] ?? 'light' );
+        $user_highlight_choice = ! empty( $options['user_highlight_choice'] ) ? 'true' : 'false';
+
+        $player_html = sprintf(
+            '<div class="speechable-player" data-audio="%s" data-timings="%s" data-highlighting="%s" data-autoscroll="%s" data-highlight-light="%s" data-highlight-dark="%s" data-color-scheme="%s" data-user-highlight="%s">
+                <button class="speechable-play" aria-label="%s">
+                    <svg class="icon-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+                <div class="speechable-progress-wrap">
+                    <div class="speechable-progress-bar"><div class="speechable-progress-fill" style="width:0%%;background-color:%s"></div></div>
+                </div>
+                <span class="speechable-time">0:00</span>
+                <span class="speechable-duration">0:00</span>
+                <button class="speechable-speed" aria-label="%s">1x</button>
+                <button class="speechable-download" aria-label="%s" title="%s">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+            </div>',
+            esc_attr( $audio_data ),
+            esc_attr( $word_timings ),
+            esc_attr( $options['word_highlighting'] ? 'true' : 'false' ),
+            esc_attr( $options['auto_scroll'] ? 'true' : 'false' ),
+            $highlight_light,
+            $highlight_dark,
+            $color_scheme,
+            $user_highlight_choice,
+            esc_attr__( 'Play audio', 'speechable' ),
+            $progress_color,
+            esc_attr__( 'Playback speed', 'speechable' ),
+            esc_attr__( 'Download audio', 'speechable' ),
+            esc_attr__( 'Download audio', 'speechable' )
+        );
+
+        wp_send_json_success( array( 'html' => $player_html ) );
     }
 
     /**
@@ -152,24 +384,39 @@ final class Speechable {
      */
     public function get_default_settings() {
         return array(
-            'voice'             => 'en_US-hfc_female-medium',
-            'language'          => 'en',
-            'quality'           => 'medium',
-            'speed'             => 1.0,
-            'post_types'        => array( 'post' ),
-            'player_position'   => 'before',
-            'word_highlighting' => true,
-            'auto_scroll'       => true,
-            'pitch_shift'       => 0,
-            'reverb'            => 0,
-            'voice_preset'      => 'default',
-            'color_player_bg'   => '#ffffff',
-            'color_text'        => '#1a1a1a',
-            'color_button'      => '#2563eb',
-            'color_progress'    => '#2563eb',
-            'color_highlight'   => '#fef08a',
-            'border_radius'     => 8,
-            'whisper_model'     => 'Xenova/whisper-tiny.en',
+            'voice'               => 'en_US-hfc_female-medium',
+            'language'            => 'en',
+            'quality'             => 'medium',
+            'speed'               => 1.0,
+            'post_types'          => array( 'post' ),
+            'player_position'     => 'before',
+            'word_highlighting'   => true,
+            'auto_scroll'         => true,
+            'pitch_shift'         => 0,
+            'reverb'              => 0,
+            'voice_preset'        => 'default',
+            // Light mode colors
+            'color_player_bg'     => '#ffffff',
+            'color_text'          => '#1a1a1a',
+            'color_button'        => '#2563eb',
+            'color_progress'      => '#2563eb',
+            'color_highlight'     => '#fef08a',
+            'color_border'        => '#e5e7eb',
+            'color_progress_bg'   => '#e5e7eb',
+            // Dark mode colors
+            'dark_player_bg'      => '#1f2937',
+            'dark_text'           => '#f3f4f6',
+            'dark_button'         => '#3b82f6',
+            'dark_progress'       => '#3b82f6',
+            'dark_highlight'      => '#854d0e',
+            'dark_border'         => '#374151',
+            'dark_progress_bg'    => '#374151',
+            // Color scheme: 'light', 'dark', 'auto', 'system'
+            'color_scheme'        => 'light',
+            // Allow users to pick highlight color
+            'user_highlight_choice' => true,
+            'border_radius'       => 12,
+            'whisper_model'       => 'Xenova/whisper-tiny.en',
         );
     }
 
@@ -351,11 +598,32 @@ final class Speechable {
             ? $input['voice_preset']
             : $defaults['voice_preset'];
 
+        // Light mode colors.
         $sanitized['color_player_bg']   = sanitize_hex_color( $input['color_player_bg'] ?? '' ) ?: $defaults['color_player_bg'];
         $sanitized['color_text']        = sanitize_hex_color( $input['color_text'] ?? '' ) ?: $defaults['color_text'];
         $sanitized['color_button']      = sanitize_hex_color( $input['color_button'] ?? '' ) ?: $defaults['color_button'];
         $sanitized['color_progress']    = sanitize_hex_color( $input['color_progress'] ?? '' ) ?: $defaults['color_progress'];
         $sanitized['color_highlight']   = sanitize_hex_color( $input['color_highlight'] ?? '' ) ?: $defaults['color_highlight'];
+        $sanitized['color_border']      = sanitize_hex_color( $input['color_border'] ?? '' ) ?: $defaults['color_border'];
+        $sanitized['color_progress_bg'] = sanitize_hex_color( $input['color_progress_bg'] ?? '' ) ?: $defaults['color_progress_bg'];
+
+        // Dark mode colors.
+        $sanitized['dark_player_bg']    = sanitize_hex_color( $input['dark_player_bg'] ?? '' ) ?: $defaults['dark_player_bg'];
+        $sanitized['dark_text']         = sanitize_hex_color( $input['dark_text'] ?? '' ) ?: $defaults['dark_text'];
+        $sanitized['dark_button']       = sanitize_hex_color( $input['dark_button'] ?? '' ) ?: $defaults['dark_button'];
+        $sanitized['dark_progress']     = sanitize_hex_color( $input['dark_progress'] ?? '' ) ?: $defaults['dark_progress'];
+        $sanitized['dark_highlight']    = sanitize_hex_color( $input['dark_highlight'] ?? '' ) ?: $defaults['dark_highlight'];
+        $sanitized['dark_border']       = sanitize_hex_color( $input['dark_border'] ?? '' ) ?: $defaults['dark_border'];
+        $sanitized['dark_progress_bg']  = sanitize_hex_color( $input['dark_progress_bg'] ?? '' ) ?: $defaults['dark_progress_bg'];
+
+        // Color scheme.
+        $sanitized['color_scheme']      = in_array( $input['color_scheme'] ?? '', array( 'light', 'dark', 'auto', 'system' ), true )
+            ? $input['color_scheme']
+            : $defaults['color_scheme'];
+
+        // Allow users to pick highlight color.
+        $sanitized['user_highlight_choice'] = ! empty( $input['user_highlight_choice'] );
+
         $sanitized['border_radius']     = absint( $input['border_radius'] ?? $defaults['border_radius'] );
         $sanitized['border_radius']     = min( 24, $sanitized['border_radius'] );
 
@@ -572,6 +840,10 @@ final class Speechable {
                                     <input type="checkbox" name="speechable_options[auto_scroll]" value="1" <?php checked( $options['auto_scroll'] ); ?>>
                                     <?php esc_html_e( 'Auto-scroll to highlighted word', 'speechable' ); ?>
                                 </label>
+                                <label>
+                                    <input type="checkbox" name="speechable_options[user_highlight_choice]" value="1" <?php checked( $options['user_highlight_choice'] ?? true ); ?>>
+                                    <?php esc_html_e( 'Allow users to choose highlight color (5 presets)', 'speechable' ); ?>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -584,7 +856,34 @@ final class Speechable {
                     </div>
                     <div class="speechable-card-body">
                         <div class="speechable-field">
-                            <label><?php esc_html_e( 'Colors', 'speechable' ); ?></label>
+                            <label><?php esc_html_e( 'Color Scheme', 'speechable' ); ?></label>
+                            <div class="speechable-scheme-selector">
+                                <label class="speechable-scheme-option<?php echo 'light' === $options['color_scheme'] ? ' active' : ''; ?>">
+                                    <input type="radio" name="speechable_options[color_scheme]" value="light" <?php checked( $options['color_scheme'], 'light' ); ?>>
+                                    <span class="speechable-scheme-icon">☀️</span>
+                                    <span class="speechable-scheme-label"><?php esc_html_e( 'Light', 'speechable' ); ?></span>
+                                </label>
+                                <label class="speechable-scheme-option<?php echo 'dark' === $options['color_scheme'] ? ' active' : ''; ?>">
+                                    <input type="radio" name="speechable_options[color_scheme]" value="dark" <?php checked( $options['color_scheme'], 'dark' ); ?>>
+                                    <span class="speechable-scheme-icon">🌙</span>
+                                    <span class="speechable-scheme-label"><?php esc_html_e( 'Dark', 'speechable' ); ?></span>
+                                </label>
+                                <label class="speechable-scheme-option<?php echo 'auto' === $options['color_scheme'] ? ' active' : ''; ?>">
+                                    <input type="radio" name="speechable_options[color_scheme]" value="auto" <?php checked( $options['color_scheme'], 'auto' ); ?>>
+                                    <span class="speechable-scheme-icon">🔄</span>
+                                    <span class="speechable-scheme-label"><?php esc_html_e( 'Auto', 'speechable' ); ?></span>
+                                </label>
+                                <label class="speechable-scheme-option<?php echo 'system' === $options['color_scheme'] ? ' active' : ''; ?>">
+                                    <input type="radio" name="speechable_options[color_scheme]" value="system" <?php checked( $options['color_scheme'], 'system' ); ?>>
+                                    <span class="speechable-scheme-icon">💻</span>
+                                    <span class="speechable-scheme-label"><?php esc_html_e( 'System', 'speechable' ); ?></span>
+                                </label>
+                            </div>
+                            <p class="description"><?php esc_html_e( 'Auto detects website theme. System follows visitor\'s OS preference.', 'speechable' ); ?></p>
+                        </div>
+
+                        <div class="speechable-field speechable-colors-light" id="speechable-colors-light">
+                            <label><?php esc_html_e( 'Light Mode Colors', 'speechable' ); ?></label>
                             <div class="speechable-color-grid">
                                 <div class="speechable-color-item">
                                     <input type="color" name="speechable_options[color_player_bg]" value="<?php echo esc_attr( $options['color_player_bg'] ); ?>" id="speechable-color-bg">
@@ -600,11 +899,53 @@ final class Speechable {
                                 </div>
                                 <div class="speechable-color-item">
                                     <input type="color" name="speechable_options[color_progress]" value="<?php echo esc_attr( $options['color_progress'] ); ?>" id="speechable-color-progress">
-                                    <span><?php esc_html_e( 'Progress Bar', 'speechable' ); ?></span>
+                                    <span><?php esc_html_e( 'Progress', 'speechable' ); ?></span>
+                                </div>
+                                <div class="speechable-color-item">
+                                    <input type="color" name="speechable_options[color_border]" value="<?php echo esc_attr( $options['color_border'] ?? '#e5e7eb' ); ?>" id="speechable-color-border">
+                                    <span><?php esc_html_e( 'Border', 'speechable' ); ?></span>
+                                </div>
+                                <div class="speechable-color-item">
+                                    <input type="color" name="speechable_options[color_progress_bg]" value="<?php echo esc_attr( $options['color_progress_bg'] ?? '#e5e7eb' ); ?>" id="speechable-color-progress-bg">
+                                    <span><?php esc_html_e( 'Track', 'speechable' ); ?></span>
                                 </div>
                                 <div class="speechable-color-item">
                                     <input type="color" name="speechable_options[color_highlight]" value="<?php echo esc_attr( $options['color_highlight'] ); ?>" id="speechable-color-highlight">
-                                    <span><?php esc_html_e( 'Word Highlight', 'speechable' ); ?></span>
+                                    <span><?php esc_html_e( 'Highlight', 'speechable' ); ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="speechable-field speechable-colors-dark" id="speechable-colors-dark">
+                            <label><?php esc_html_e( 'Dark Mode Colors', 'speechable' ); ?></label>
+                            <div class="speechable-color-grid">
+                                <div class="speechable-color-item">
+                                    <input type="color" name="speechable_options[dark_player_bg]" value="<?php echo esc_attr( $options['dark_player_bg'] ?? '#1f2937' ); ?>" id="speechable-dark-bg">
+                                    <span><?php esc_html_e( 'Background', 'speechable' ); ?></span>
+                                </div>
+                                <div class="speechable-color-item">
+                                    <input type="color" name="speechable_options[dark_text]" value="<?php echo esc_attr( $options['dark_text'] ?? '#f3f4f6' ); ?>" id="speechable-dark-text">
+                                    <span><?php esc_html_e( 'Text', 'speechable' ); ?></span>
+                                </div>
+                                <div class="speechable-color-item">
+                                    <input type="color" name="speechable_options[dark_button]" value="<?php echo esc_attr( $options['dark_button'] ?? '#3b82f6' ); ?>" id="speechable-dark-button">
+                                    <span><?php esc_html_e( 'Button', 'speechable' ); ?></span>
+                                </div>
+                                <div class="speechable-color-item">
+                                    <input type="color" name="speechable_options[dark_progress]" value="<?php echo esc_attr( $options['dark_progress'] ?? '#3b82f6' ); ?>" id="speechable-dark-progress">
+                                    <span><?php esc_html_e( 'Progress', 'speechable' ); ?></span>
+                                </div>
+                                <div class="speechable-color-item">
+                                    <input type="color" name="speechable_options[dark_border]" value="<?php echo esc_attr( $options['dark_border'] ?? '#374151' ); ?>" id="speechable-dark-border">
+                                    <span><?php esc_html_e( 'Border', 'speechable' ); ?></span>
+                                </div>
+                                <div class="speechable-color-item">
+                                    <input type="color" name="speechable_options[dark_progress_bg]" value="<?php echo esc_attr( $options['dark_progress_bg'] ?? '#374151' ); ?>" id="speechable-dark-progress-bg">
+                                    <span><?php esc_html_e( 'Track', 'speechable' ); ?></span>
+                                </div>
+                                <div class="speechable-color-item">
+                                    <input type="color" name="speechable_options[dark_highlight]" value="<?php echo esc_attr( $options['dark_highlight'] ?? '#854d0e' ); ?>" id="speechable-dark-highlight">
+                                    <span><?php esc_html_e( 'Highlight', 'speechable' ); ?></span>
                                 </div>
                             </div>
                         </div>
@@ -618,7 +959,13 @@ final class Speechable {
                         </div>
 
                         <div class="speechable-preview-box">
-                            <label style="font-size: 12px; color: #6b7280; margin-bottom: 10px; display: block;"><?php esc_html_e( 'Preview', 'speechable' ); ?></label>
+                            <div class="speechable-preview-toggle">
+                                <label style="font-size: 12px; color: #6b7280; margin-bottom: 10px; display: block;"><?php esc_html_e( 'Preview', 'speechable' ); ?></label>
+                                <button type="button" class="speechable-preview-mode-btn" id="speechable-preview-mode" title="<?php esc_attr_e( 'Toggle dark/light preview', 'speechable' ); ?>">
+                                    <span class="light-icon">☀️</span>
+                                    <span class="dark-icon" style="display:none;">🌙</span>
+                                </button>
+                            </div>
                             <div class="speechable-preview-player" id="speechable-preview">
                                 <button type="button" class="speechable-preview-btn">▶</button>
                                 <div class="speechable-preview-bar"><div class="speechable-preview-fill"></div></div>
@@ -887,33 +1234,103 @@ final class Speechable {
             true
         );
 
+        // Add attributes to exclude from optimization plugins.
+        add_filter( 'script_loader_tag', array( $this, 'add_script_attributes' ), 10, 2 );
+
         wp_localize_script(
             'speechable-player',
             'speechablePlayer',
             array(
                 'options' => $options,
                 'postId'  => $post_id,
+                'nonce'   => wp_create_nonce( 'speechable_player_nonce' ),
             )
         );
 
-        $custom_css = sprintf(
-            '.speechable-player {
-                --speechable-bg: %s;
-                --speechable-text: %s;
-                --speechable-button: %s;
-                --speechable-progress: %s;
-                --speechable-highlight: %s;
-                --speechable-radius: %dpx;
-            }',
+        $color_scheme = $options['color_scheme'] ?? 'light';
+        
+        // Build CSS based on color scheme
+        $light_css = sprintf(
+            '--speechable-bg: %s;
+            --speechable-text: %s;
+            --speechable-button: %s;
+            --speechable-progress: %s;
+            --speechable-highlight: %s;
+            --speechable-border: %s;
+            --speechable-progress-bg: %s;
+            --speechable-radius: %dpx;',
             esc_attr( $options['color_player_bg'] ),
             esc_attr( $options['color_text'] ),
             esc_attr( $options['color_button'] ),
             esc_attr( $options['color_progress'] ),
             esc_attr( $options['color_highlight'] ),
+            esc_attr( $options['color_border'] ?? '#e5e7eb' ),
+            esc_attr( $options['color_progress_bg'] ?? '#e5e7eb' ),
             absint( $options['border_radius'] )
         );
 
+        $dark_css = sprintf(
+            '--speechable-bg: %s;
+            --speechable-text: %s;
+            --speechable-button: %s;
+            --speechable-progress: %s;
+            --speechable-highlight: %s;
+            --speechable-border: %s;
+            --speechable-progress-bg: %s;
+            --speechable-radius: %dpx;',
+            esc_attr( $options['dark_player_bg'] ?? '#1f2937' ),
+            esc_attr( $options['dark_text'] ?? '#f3f4f6' ),
+            esc_attr( $options['dark_button'] ?? '#3b82f6' ),
+            esc_attr( $options['dark_progress'] ?? '#3b82f6' ),
+            esc_attr( $options['dark_highlight'] ?? '#854d0e' ),
+            esc_attr( $options['dark_border'] ?? '#374151' ),
+            esc_attr( $options['dark_progress_bg'] ?? '#374151' ),
+            absint( $options['border_radius'] )
+        );
+
+        if ( 'light' === $color_scheme ) {
+            $custom_css = '.speechable-player { ' . $light_css . ' }';
+        } elseif ( 'dark' === $color_scheme ) {
+            $custom_css = '.speechable-player { ' . $dark_css . ' }';
+        } elseif ( 'system' === $color_scheme ) {
+            // System mode - use CSS media query for OS preference
+            $custom_css = '.speechable-player { ' . $light_css . ' }
+            @media (prefers-color-scheme: dark) {
+                .speechable-player { ' . $dark_css . ' }
+            }';
+        } else {
+            // Auto mode - default to light, JS will detect website theme and switch if needed
+            $custom_css = '.speechable-player { ' . $light_css . ' }
+            .speechable-player.speechable-dark { ' . $dark_css . ' }';
+        }
+
         wp_add_inline_style( 'speechable-player', $custom_css );
+    }
+
+    /**
+     * Add attributes to script tag to exclude from optimization.
+     *
+     * @param string $tag Script tag HTML.
+     * @param string $handle Script handle.
+     * @return string Modified script tag.
+     */
+    public function add_script_attributes( $tag, $handle ) {
+        if ( 'speechable-player' !== $handle ) {
+            return $tag;
+        }
+
+        // Add attributes that various optimization plugins recognize:
+        // - data-no-minify: WP Rocket, LiteSpeed
+        // - data-no-defer: WP Rocket
+        // - data-no-optimize: Autoptimize
+        // - data-cfasync="false": Cloudflare
+        // - class="no-defer no-minify": Various plugins
+        $attributes = 'data-no-minify="1" data-no-defer="1" data-no-optimize="1" data-cfasync="false" class="no-defer no-minify"';
+        
+        // Insert attributes before src
+        $tag = str_replace( ' src=', ' ' . $attributes . ' src=', $tag );
+        
+        return $tag;
     }
 
     /**
@@ -955,14 +1372,21 @@ final class Speechable {
             $word_timings = get_post_meta( $post_id, 'piper_tts_word_timings', true );
         }
 
+        // Get progress color for inline style fallback
+        $progress_color = esc_attr( $options['color_progress'] ?? '#2563eb' );
+        $highlight_light = esc_attr( $options['color_highlight'] ?? '#fef08a' );
+        $highlight_dark = esc_attr( $options['dark_highlight'] ?? '#854d0e' );
+        $color_scheme = esc_attr( $options['color_scheme'] ?? 'light' );
+        $user_highlight_choice = ! empty( $options['user_highlight_choice'] ) ? 'true' : 'false';
+
         $player_html = sprintf(
-            '<div class="speechable-player" data-audio="%s" data-timings="%s" data-highlighting="%s" data-autoscroll="%s">
+            '<div class="speechable-player" data-audio="%s" data-timings="%s" data-highlighting="%s" data-autoscroll="%s" data-highlight-light="%s" data-highlight-dark="%s" data-color-scheme="%s" data-user-highlight="%s">
                 <button class="speechable-play" aria-label="%s">
                     <svg class="icon-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                     <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                 </button>
                 <div class="speechable-progress-wrap">
-                    <div class="speechable-progress-bar"><div class="speechable-progress-fill"></div></div>
+                    <div class="speechable-progress-bar"><div class="speechable-progress-fill" style="width:0%%;background-color:%s"></div></div>
                 </div>
                 <span class="speechable-time">0:00</span>
                 <span class="speechable-duration">0:00</span>
@@ -975,7 +1399,12 @@ final class Speechable {
             esc_attr( $word_timings ),
             esc_attr( $options['word_highlighting'] ? 'true' : 'false' ),
             esc_attr( $options['auto_scroll'] ? 'true' : 'false' ),
+            $highlight_light,
+            $highlight_dark,
+            $color_scheme,
+            $user_highlight_choice,
             esc_attr__( 'Play audio', 'speechable' ),
+            $progress_color,
             esc_attr__( 'Playback speed', 'speechable' ),
             esc_attr__( 'Download audio', 'speechable' ),
             esc_attr__( 'Download audio', 'speechable' )
